@@ -1,0 +1,102 @@
+<aura:component controller="AccountList" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:appHostable" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}"/>
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:attribute name="contacts" type="Contact[]"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <!--<aura:handler name="init" value="{!this}" action="{!c.myAction}"/>-->
+    <aura:registerEvent name="editRecord" type="force:editRecord" />
+    <aura:handler event="force:showToast" action="{!c.handleToastEvent}"/>
+    <aura:registerEvent name="refreshView" type="force:refreshView"/>
+    <aura:registerEvent name="showToast" type="force:showToast"/>
+    
+    <lightning:button label="Information" variant="brand" onclick="{!c.showInfoToast}">Edit</lightning:button>
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate" title="Edit">Button For Edit</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Related Contacts">Click</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Name">Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Industry">Industry</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Phone">Phone</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.accounts}" var="accs1" indexVar="idx" >
+                <tr>
+                    <td data-label="Button">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.editRecord1}" data-value="{!accs1.Id}" >Edit</button>
+                    </td>
+                    <td data-label="Button">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.Clicked}" data-value="{!accs1.Id}">Related Contacts</button>
+                    </td>
+                    <td data-label="Name">
+                        <div class="slds-truncate" title="Name">{!accs1.Name} </div>
+                    </td>
+                    <td data-label="Industry">
+                        <div class="slds-truncate" title="Industry">{!accs1.Industry}</div>
+                    </td>
+                    <td data-label="Phone">
+                        <div class="slds-truncate" title="Phone">{!accs1.Phone}</div>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody> 
+    </table>
+    
+    <div>
+        <aura:if isTrue="{!v.isOpen}">
+            <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModel}">
+                            X
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="header99" class="slds-text-heading--medium">Related Contact</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Name">Name</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Phone">Phone</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.contacts}" var="con1">
+                                    <tr>
+                                        <td data-label="Name">
+                                            <div class="slds-truncate" title="Name">{!con1.Name} </div>
+                                        </td>
+                                        <td data-label="Phone">
+                                            <div class="slds-truncate" title="Phone">{!con1.Phone}</div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody> 
+                        </table>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.closeModel}" >Cancel</button>
+                        <button class="slds-button slds-button--brand" onclick="{!c.likenClose}">Like and Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </aura:if>
+    </div>
+</aura:component>
